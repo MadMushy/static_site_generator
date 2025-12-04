@@ -43,4 +43,21 @@ class LeafNode(HTMLNode):
         return "".join(f'{key}=https://www.{value}' for key,value in self.props.items())
           
 
+class ParentNode(HTMLNode):
+    def __init__(self, tag, children, props = None):
+        super().__init__(tag = tag, children = children, props = props)
+
+    def to_html(self):
+        if not self.tag:
+            raise ValueError("ParentNode needs a tag dont be a bitch and add one.")
+
+        if not self.children:
+            raise ValueError("ParentNode needs a child to be fufilled... dont we all")
+
+        props_str = self.props_to_html()
+        child_html = "".join(child.to_html() for child in self.children)
+
+        return f"<{self.tag}{props_str}>{child_html}</{self.tag}>"
+        
+
 
